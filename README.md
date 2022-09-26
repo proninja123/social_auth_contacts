@@ -17,6 +17,9 @@ Social Providers includes:
 After successful authentication, navigating user to the contact list page design. 
 
 ## Screenshots
+|   |   |   |
+|---|---|---|
+|![308307244_359971669596276_5987553228150721405_n](https://user-images.githubusercontent.com/81812726/192216392-883e6f0b-6e5b-4086-ad20-ed03ffae734e.png)|![308456038_801087391041593_3167086906732262761_n](https://user-images.githubusercontent.com/81812726/192216401-decad25d-3225-4ae1-b08f-001afebcb8e1.png)|![308329127_768816270858940_1821918088298404205_n](https://user-images.githubusercontent.com/81812726/192216411-b5309eb1-9ff0-41d7-a998-4b6132c106aa.png)|
 
 
 ## Getting Started
