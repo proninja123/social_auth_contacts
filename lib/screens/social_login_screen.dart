@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:socialautologin/data/services/authetication_services.dart';
 import 'package:socialautologin/screens/contact_screen.dart';
+import 'package:socialautologin/screens/phone_auth_screen.dart';
 import 'package:socialautologin/utils/colors.dart';
 
 class SocialLoginScreen extends StatelessWidget {
@@ -62,7 +63,24 @@ class SocialLoginScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const ContactScreen()));
               }
-            })
+            }),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PhoneAuthScreen()));
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.07),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.black, width: 2)),
+                height: 40,
+                width: double.infinity,
+                child: const Text("CONTINUE WITH MOBILE"),
+              ),
+            )
             //  socialSignIn("Continue With Apple")
           ],
         ),

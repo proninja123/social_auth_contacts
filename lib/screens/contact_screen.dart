@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socialautologin/data/services/authetication_services.dart';
 import 'package:socialautologin/screens/contact_details_screen.dart';
-import 'package:socialautologin/screens/social_login_screen.dart';
 import 'package:socialautologin/utils/colors.dart';
 
 class ContactScreen extends StatelessWidget {

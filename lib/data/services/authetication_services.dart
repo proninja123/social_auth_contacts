@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialautologin/data/github_signin/src/github_sign_in.dart';
-import 'package:socialautologin/data/github_signin/src/github_sign_in_result.dart';
 import 'package:socialautologin/screens/contact_screen.dart';
+import 'package:socialautologin/screens/otp_screen.dart';
 import 'package:socialautologin/screens/social_login_screen.dart';
 import 'package:socialautologin/utils/credentials.dart';
 import 'package:twitter_login/twitter_login.dart';
@@ -125,6 +125,43 @@ class AuthenticationServices {
     }catch(e) {
       return false;
     }
+  }
+
+  Future<bool> signInWithPhoneNumber(BuildContext context, String isoCode, String phoneNumber) async {
+    try{
+      await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: "[+][$isoCode][$phoneNumber]",
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            await FirebaseAuth.instance
+                .signInWithCredential(credential)
+                .then((value) async {
+              if (value.user != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  ContactScreen()),
+                );
+              }
+            });
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            print(e.message);
+          },
+          timeout: const Duration(seconds: 60),
+          codeSent: (String verificationId, int? resendToken) {
+        //    stringVerification.value = verificationId;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>  OtpScreen(verificationId: verificationId,)),
+            );
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {
+         //   stringVerification.value = verificationId;
+          });
+      return true;
+    }catch(e) {
+     return false;
+    }
+
   }
 
 //todo
