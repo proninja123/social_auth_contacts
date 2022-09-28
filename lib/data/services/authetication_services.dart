@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:socialautologin/data/github_signin/src/github_sign_in.dart';
+import 'package:socialautologin/data/github_signin/src/github_sign_in_result.dart';
 import 'package:socialautologin/screens/contact_screen.dart';
 import 'package:socialautologin/screens/social_login_screen.dart';
 import 'package:socialautologin/utils/credentials.dart';
@@ -47,8 +49,7 @@ class AuthenticationServices {
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(value.accessToken!.token);
         try {
-          await _auth
-              .signInWithCredential(facebookAuthCredential);
+          await _auth.signInWithCredential(facebookAuthCredential);
           return true;
         } on FirebaseAuthException catch (e) {
           if (e.code == "account-exists-with-different-credential") {
@@ -104,18 +105,28 @@ class AuthenticationServices {
     });
   }
 
-//todo
-/*  Future<void> microsoftLogIn(BuildContext context) async {
-    var pca = await PublicClientApplication.createPublicClientApplication(
-        "YOUR_KEY",
-        authority:
-            "https://login.microsoftonline.com/common/oauth2/nativeclient");
-    try {
-      String token = await pca.acquireToken([
-        "https://msalfluttertest.onmicrosoft.com/msalbackend/user_impersonation"
-      ]);
-    } on MsalException {
-      //error handling logic here
+  Future<bool> signInWithGitHub(BuildContext context) async {
+    // Create a GitHubSignIn instance
+    try{
+      final GitHubSignIn gitHubSignIn = GitHubSignIn(
+          clientId: "3464ad604c938f82ee74",
+          clientSecret: "fd3a68d780fb71160dfd13bb09b44326c7c05220",
+          redirectUrl:
+          'https://socialloginapp-ab8cf.firebaseapp.com/__/auth/handler');
+
+      // Trigger the sign-in flow
+      final result = await gitHubSignIn.signIn(context);
+
+      // Create a credential from the access token
+      final githubAuthCredential = GithubAuthProvider.credential(result.token!);
+      await FirebaseAuth.instance
+          .signInWithCredential(githubAuthCredential);
+      return true;
+    }catch(e) {
+      return false;
     }
-  }*/
+  }
+
+//todo
+// https://socialloginapp-ab8cf.firebaseapp.com/__/auth/handler
 }

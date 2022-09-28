@@ -27,9 +27,8 @@ class SocialLoginScreen extends StatelessWidget {
                 onPressed: () async {
                   final navigator = Navigator.of(context);
                   if (await AuthenticationServices().googleSignIn(context)) {
-                    navigator.push(
-                        MaterialPageRoute(
-                            builder: (context) => const ContactScreen()));
+                    navigator.push(MaterialPageRoute(
+                        builder: (context) => const ContactScreen()));
                   }
                 },
               ),
@@ -56,6 +55,14 @@ class SocialLoginScreen extends StatelessWidget {
                 }
               },
             ),
+            SignInButton(Buttons.GitHub, onPressed: () async {
+              if (await AuthenticationServices().signInWithGitHub(context)) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ContactScreen()));
+              }
+            })
             //  socialSignIn("Continue With Apple")
           ],
         ),
