@@ -2,15 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:socialautologin/screens/contact_screen.dart';
+import 'package:socialautologin/utils/countdown_start.dart';
 
 class OtpScreen extends StatelessWidget {
-  final String? number;
+  final String number;
   final String verificationId;
+  final int? resendToken;
+  final String? numberShow;
 
-   OtpScreen({Key? key, this.number, required this.verificationId})
+  OtpScreen(
+      {Key? key,
+      required this.number,
+      required this.verificationId,
+      this.resendToken,
+      this.numberShow})
       : super(key: key);
-
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class OtpScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "We have sent 0 4-digit code?",
+              "We have sent 0 6-digit code?",
               style:
                   TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 13),
             ),
@@ -50,7 +56,7 @@ class OtpScreen extends StatelessWidget {
               height: 30,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: PinCodeTextField(
                 keyboardType: TextInputType.number,
                 length: 6,
@@ -108,7 +114,7 @@ class OtpScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    number ?? '',
+                    numberShow ?? '',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -116,10 +122,13 @@ class OtpScreen extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text(
-                    "Resend code in 0.21",
-                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
-                  )
+                  CountdownStart(
+                    resendToken: resendToken!,
+                    phoneNumber: number,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                 ],
               ),
             ),

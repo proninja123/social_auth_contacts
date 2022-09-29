@@ -62,8 +62,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       padding: const EdgeInsets.only(top: 4),
                       child: TextFormField(
                         controller: phoneNumberController,
-                        onSaved: (value) {
-                        },
+                        onSaved: (value) {},
                         scrollPadding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom +
                                 12 * 4),
@@ -102,7 +101,11 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       backgroundColor: MaterialStateProperty.all(
                           Colors.black12 ?? Colors.red)),
                   onPressed: () {
-                    AuthenticationServices().signInWithPhoneNumber(context, countryCode!, phoneNumberController.text);
+                    AuthenticationServices().signInWithPhoneNumber(
+                        context: context,
+                        isoCode: countryCode!,
+                      phoneNumber: phoneNumberController.text,
+                    );
                   },
                   child: const Text(
                     "Get OTP" ?? "",

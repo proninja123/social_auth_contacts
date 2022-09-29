@@ -107,28 +107,31 @@ class AuthenticationServices {
 
   Future<bool> signInWithGitHub(BuildContext context) async {
     // Create a GitHubSignIn instance
-    try{
+    try {
       final GitHubSignIn gitHubSignIn = GitHubSignIn(
           clientId: "3464ad604c938f82ee74",
           clientSecret: "fd3a68d780fb71160dfd13bb09b44326c7c05220",
           redirectUrl:
-          'https://socialloginapp-ab8cf.firebaseapp.com/__/auth/handler');
+              'https://socialloginapp-ab8cf.firebaseapp.com/__/auth/handler');
 
       // Trigger the sign-in flow
       final result = await gitHubSignIn.signIn(context);
 
       // Create a credential from the access token
       final githubAuthCredential = GithubAuthProvider.credential(result.token!);
-      await FirebaseAuth.instance
-          .signInWithCredential(githubAuthCredential);
+      await FirebaseAuth.instance.signInWithCredential(githubAuthCredential);
       return true;
-    }catch(e) {
+    } catch (e) {
       return false;
     }
   }
 
-  Future<bool> signInWithPhoneNumber(BuildContext context, String isoCode, String phoneNumber) async {
-    try{
+  Future<bool> signInWithPhoneNumber(
+      {required BuildContext context,
+      required String isoCode,
+      required String phoneNumber,
+      int? forceResendToken}) async {
+    try {
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: "[+][$isoCode][$phoneNumber]",
           verificationCompleted: (PhoneAuthCredential credential) async {
@@ -138,7 +141,7 @@ class AuthenticationServices {
               if (value.user != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ContactScreen()),
+                  MaterialPageRoute(builder: (context) => ContactScreen()),
                 );
               }
             });
@@ -148,20 +151,25 @@ class AuthenticationServices {
           },
           timeout: const Duration(seconds: 60),
           codeSent: (String verificationId, int? resendToken) {
-        //    stringVerification.value = verificationId;
+            //    stringVerification.value = verificationId;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  OtpScreen(verificationId: verificationId,)),
+              MaterialPageRoute(
+                  builder: (context) => OtpScreen(
+                        verificationId: verificationId,
+                        resendToken: resendToken,
+                        numberShow: "+$isoCode$phoneNumber",
+                        number: "[+][$isoCode][$phoneNumber]",
+                      )),
             );
           },
           codeAutoRetrievalTimeout: (String verificationId) {
-         //   stringVerification.value = verificationId;
+            //   stringVerification.value = verificationId;
           });
       return true;
-    }catch(e) {
-     return false;
+    } catch (e) {
+      return false;
     }
-
   }
 
 //todo
